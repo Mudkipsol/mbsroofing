@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -81,7 +81,6 @@ interface Product {
 
 export default function InventoryPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { user } = useAuth();
   const { addToCart, items: cartItems } = useCart();
 
@@ -283,7 +282,7 @@ export default function InventoryPage() {
   }, []);
 
   // Handle navigation
-  const handleCategoryClick = (category: any) => {
+  const handleCategoryClick = (category: typeof CATEGORIES[0]) => {
     setSelectedCategory(category.id);
 
     if (category.hasSubcategories) {
@@ -298,14 +297,14 @@ export default function InventoryPage() {
     }
   };
 
-  const handleManufacturerClick = (manufacturer: any) => {
+  const handleManufacturerClick = (manufacturer: { id: string; name: string; description: string; image: string }) => {
     setSelectedManufacturer(manufacturer.id);
     setCurrentView('productTypes');
     const categoryName = CATEGORIES.find(c => c.id === selectedCategory)?.name || '';
     setBreadcrumb(['Categories', categoryName, manufacturer.name]);
   };
 
-  const handleProductTypeClick = (productType: any) => {
+  const handleProductTypeClick = (productType: { id: string; name: string; image: string }) => {
     setSelectedProductType(productType.id);
     setCurrentView('products');
     const categoryName = CATEGORIES.find(c => c.id === selectedCategory)?.name || '';
